@@ -102,7 +102,7 @@ main(){
             break;
             
             case '2':
-                            // APENAS PARA TESTEaa
+                            // APENAS PARA TESTE
                             //lista
                             system("cls");
                             for(int i=0; i<maximoDePessoas; i++){
