@@ -102,6 +102,14 @@ main(){
             break;
             
             case '2':
+                                    // APENAS PARA TESTE
+                                    //lista
+                                    system("cls");
+                                    for(int i=0; i<maximoDePessoas; i++){
+                                        printf("\n\n %i \n %s \n %s \n %s \n %s \n %s \n\n", pessoa[i].uuid, pessoa[i].nome, pessoa[i].telefone, pessoa[i].email, pessoa[i].dataDeNascimento, pessoa[i].observ);
+                                    }
+                                    system("pause");
+                                    system("cls");            
             break;
             
             case '3':
