@@ -22,13 +22,16 @@ main(){
     //variaves uteis
     int pessoasNaAgenda = 0;
     char op;
-    int idGerados[maximoDeUUID];
+    int idGerados[maximoDeUUID]; //registro de ids, para que os ids nunca se repitam
 
-
-    //percorre a agenda, limpa todo o lixo das variáveis e zera todos os códigos (UUDIs)
+    //percorre a agenda, limpa todo o lixo das variáveis e zera todos os códigos (UUDIs) dentro do struct
     for(int i=0; i<maximoDePessoas; i++){
         //memset define um valor para uma variavel para os primeiros caracteres definidos
         memset(&pessoa[i], NULL, sizeof(Pessoa));
+    }
+    //zera o array que registra os ids gerados
+    for(int i=0; i<maximoDeUUID; i++){
+        idGerados[i] = 0;
     }
 
 
