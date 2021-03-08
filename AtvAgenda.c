@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 typedef struct Pessoa{
@@ -14,6 +15,7 @@ typedef struct Pessoa{
 const int maximoDePessoas = 10;
 const int maximoDeUUID = 500;
 Pessoa adiciona();
+void lista();
     
 main(){
     //agenda / espaços para pessoas
@@ -104,15 +106,33 @@ main(){
                 }
             break;
             
+            //LISTAR
             case '2':
-                                    // APENAS PARA TESTE
-                                    //lista
-                                    system("cls");
-                                    for(int i=0; i<maximoDePessoas; i++){
-                                        printf("\n\n %i \n %s \n %s \n %s \n %s \n %s \n\n", pessoa[i].uuid, pessoa[i].nome, pessoa[i].telefone, pessoa[i].email, pessoa[i].dataDeNascimento, pessoa[i].observ);
-                                    }
-                                    system("pause");
-                                    system("cls");
+                system("cls");
+                
+                //se não existe pessoas na agenda
+                if(pessoasNaAgenda == 0){
+                    system("cls");
+                    printf(" ______________________________________________________________\n");
+                    printf("|___________________________ AGENDA ___________________________|\n");
+                    printf("|                                                              |\n");
+                    printf("|                         Agenda Vazia                         |\n");
+                    printf("|______________________________________________________________|\n"); 
+                    system("pause");        
+                }else{
+                
+                    //exibe a lista
+                    printf(" ______________________________________________________________\n");
+                    printf("|_____________________ TODOS OS CONTATOS ______________________|\n");
+                    for(int i=0; i<maximoDePessoas; i++){
+                        
+                        //exibe apenas os contatos não nulos
+                        if(pessoa[i].uuid != 0){    
+                            mostra(pessoa[i]);
+                        }
+                    }
+                    system("pause");
+                }
             break;
             
             case '3':
@@ -138,7 +158,7 @@ main(){
 
 }
 
-//adiciona abre a tela de leitura das informacoes e retorna uma Struct Pessoa para o Array de pessoas  
+//abre a tela de leitura das informacoes e retorna uma Struct Pessoa para o Array de pessoas  
 Pessoa adiciona(int _uuid){
     Pessoa temp;
 
@@ -190,4 +210,20 @@ Pessoa adiciona(int _uuid){
     scanf("%s",temp.observ);
 
     return temp;
+}
+
+//mostra um contato especifico  
+void mostra(Pessoa _pessoa){
+    
+    printf(" ______________________________________________________________\n");
+    printf("\n");
+    printf("         Codigo Unico: %i\n",_pessoa.uuid);            
+    printf("\n");
+    printf("         Nome: %s\n", _pessoa.nome);            
+    printf("         Telefone: %s\n", _pessoa.telefone);            
+    printf("         Email: %s\n", _pessoa.email);            
+    printf("         Data de Nascimento: %s\n", _pessoa.dataDeNascimento);            
+    printf("         Observacoes: %s\n", _pessoa.observ);            
+    printf(" ______________________________________________________________\n");
+
 }
