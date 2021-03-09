@@ -11,11 +11,12 @@ typedef struct Pessoa{
     char observ[200];
 }Pessoa;
 
-//constante e funcoes
+//declaração de constantes e funcoes
 const int maximoDePessoas = 10;
 const int maximoDeUUID = 500;
-Pessoa adiciona();
-void lista();
+Pessoa adiciona(int _uuid);
+void mostra(Pessoa _pessoa);
+void busca (Pessoa _pessoa[]);
     
 main(){
     //agenda / espaços para pessoas
@@ -135,7 +136,17 @@ main(){
                 }
             break;
             
+            //BUSCAR
             case '3':
+                
+            //pergunta se vai pesquisar por uuid ou nome
+            //le a busca em uma variavel
+            //compara com um contato | verifica se ele existe
+            //chama ele
+
+            busca(pessoa);
+
+
             break;
             
             case '4':
@@ -225,5 +236,60 @@ void mostra(Pessoa _pessoa){
     printf("         Data de Nascimento: %s\n", _pessoa.dataDeNascimento);            
     printf("         Observacoes: %s\n", _pessoa.observ);            
     printf(" ______________________________________________________________\n");
+
+}
+
+
+//pergunta se vai pesquisar por uuid ou nome
+//le a busca em uma variavel
+//compara com um contato | verifica se ele existe
+//chama ele
+
+//falta verificar se existe
+//e colocar opcao invalida
+
+void busca(Pessoa _pessoa[]){
+    int uuid;
+    char nome[50];
+    char op;
+
+    system("cls");
+
+    printf("1- Pesquisar por uuid \n\n2- Pesquisar por nome\n\n");
+    scanf(" %c",&op);
+    
+    switch(op){
+        case '1':
+            system("cls");
+            printf("Digite o uuid: ");
+            scanf(" %i",&uuid);
+
+            system("cls");
+            for(int i=0; i<maximoDePessoas; i++){
+                if(uuid == _pessoa[i].uuid){
+                    mostra(_pessoa[i]);
+                }
+            }
+            
+            system("pause");
+        
+        break;
+
+        case '2':
+            system("cls");
+            printf("Digite o nome: ");
+            scanf("%s",nome);
+        
+            system("cls");
+            for(int i=0; i<maximoDePessoas; i++){
+                if(strcmp(nome, _pessoa[i].nome) == 0){
+                    mostra(_pessoa[i]);
+                }
+            }      
+    
+            system("pause");
+
+        break;
+    }
 
 }
