@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 typedef struct Pessoa{
     int uuid;
@@ -139,14 +140,7 @@ main(){
             //BUSCAR
             case '3':
                 
-            //pergunta se vai pesquisar por uuid ou nome
-            //le a busca em uma variavel
-            //compara com um contato | verifica se ele existe
-            //chama ele
-
-            busca(pessoa);
-
-
+                busca(pessoa);
             break;
             
             case '4':
@@ -236,60 +230,105 @@ void mostra(Pessoa _pessoa){
     printf("         Data de Nascimento: %s\n", _pessoa.dataDeNascimento);            
     printf("         Observacoes: %s\n", _pessoa.observ);            
     printf(" ______________________________________________________________\n");
-
 }
 
-
-//pergunta se vai pesquisar por uuid ou nome
-//le a busca em uma variavel
-//compara com um contato | verifica se ele existe
-//chama ele
-
-//falta verificar se existe
-//e colocar opcao invalida
-
+//busca contatos
 void busca(Pessoa _pessoa[]){
     int uuid;
     char nome[50];
     char op;
+    bool pessoaEncontrada = false;
 
     system("cls");
-
-    printf("1- Pesquisar por uuid \n\n2- Pesquisar por nome\n\n");
+    printf(" ______________________________________________________________\n");
+    printf("|___________________________ BUSCAR ___________________________|\n");
+    printf("|                                                              |\n");
+    printf("|       1- Pesquisar por codigo unico                          |\n");
+    printf("|                                                              |\n");
+    printf("|       2- Pesquisar por nome                                  |\n");
+    printf("|                                                              |\n");
+    printf("|       0- VOLTAR                                              |\n");
+    printf("|______________________________________________________________|\n");
+    printf(" Opcao: ");   
     scanf(" %c",&op);
     
     switch(op){
+        case '0':
+            return 0;
+        break;
+
+        //pesquisa por UUID
         case '1':
             system("cls");
-            printf("Digite o uuid: ");
+            printf(" ______________________________________________________________\n");
+            printf("|__________________________ BUSCAR ____________________________|\n");
+            printf("|                                                              |\n");
+            printf("|            Digite o codigo unico no campo abaixo             |\n");
+            printf("|______________________________________________________________|\n");   
+            printf(" Codigo unico: ");   
             scanf(" %i",&uuid);
 
+            //procura os contatos que combine com a busca e indica se um ou mais contatos foram encontrados
             system("cls");
             for(int i=0; i<maximoDePessoas; i++){
+ 
                 if(uuid == _pessoa[i].uuid){
+                    
                     mostra(_pessoa[i]);
+                    pessoaEncontrada = true;
                 }
-            }
-            
-            system("pause");
-        
+            }                    
         break;
 
+        //pesquisa por nome
         case '2':
             system("cls");
-            printf("Digite o nome: ");
+            printf(" ______________________________________________________________\n");
+            printf("|__________________________ BUSCAR ____________________________|\n");
+            printf("|                                                              |\n");
+            printf("|                Digite o nome no campo abaixo                 |\n");
+            printf("|______________________________________________________________|\n");   
+            printf(" Nome: ");   
             scanf("%s",nome);
-        
+            
+            //procura os contatos que combine com a busca e indica se um ou mais contatos foram encontrados
             system("cls");
             for(int i=0; i<maximoDePessoas; i++){
+                
                 if(strcmp(nome, _pessoa[i].nome) == 0){
+
                     mostra(_pessoa[i]);
+                    pessoaEncontrada = true;
                 }
             }      
-    
-            system("pause");
 
         break;
+
+        //opcao invalida
+        default:
+                system("cls");
+                printf(" ______________________________________________________________\n");
+                printf("|___________________________ BUSCAR ___________________________|\n");
+                printf("|                                                              |\n");
+                printf("|                  Selecione uma Opcao valida                  |\n");
+                printf("|______________________________________________________________|\n"); 
+                system("pause");        
+        break;
+
+    }
+
+    //Se não encontrar ninguem na agenda
+    if(pessoaEncontrada == false){
+        system("cls");
+        printf(" ______________________________________________________________\n");
+        printf("|__________________________ BUSCAR ____________________________|\n");
+        printf("|                                                              |\n");
+        printf("|                    Contato nao encontrado                    |\n");
+        printf("|______________________________________________________________|\n");   
+        system("pause");
+    }else{
+        //pause pra leitura dos dados encontrados
+        system("pause");
     }
 
 }
