@@ -18,7 +18,9 @@ const int maximoDeUUID = 500;
 Pessoa adiciona(int _uuid);
 void mostra(Pessoa _pessoa);
 void busca (Pessoa _pessoa[]);
-    
+
+///////////////////////////////////////eu poderia mesclar os for 33/39
+
 main(){
     //agenda / espaços para pessoas
     Pessoa pessoa[maximoDePessoas];
