@@ -57,6 +57,7 @@ main(){
         printf("|       0- SAIR                                                |\n");
         printf("|______________________________________________________________|\n");
         printf(" Opcao: ");    
+        fflush(stdin);
         scanf(" %c",&op);
 
         switch(op){   
@@ -141,18 +142,22 @@ main(){
             
             //BUSCAR
             case '3':
-                
                 busca(pessoa);
             break;
             
+            //ALTERAR
             case '4':
+                alterar(pessoa);
             break;
             
             case '5':
             break;
             
             default:
-                system("cls");
+                //system("cls");
+
+                printf("%c",op);
+
                 printf(" ______________________________________________________________\n");
                 printf("|___________________________ AGENDA ___________________________|\n");
                 printf("|                                                              |\n");
@@ -252,6 +257,7 @@ void busca(Pessoa _pessoa[]){
     printf("|       0- VOLTAR                                              |\n");
     printf("|______________________________________________________________|\n");
     printf(" Opcao: ");   
+    fflush(stdin);
     scanf(" %c",&op);
     
     switch(op){
@@ -267,7 +273,8 @@ void busca(Pessoa _pessoa[]){
             printf("|                                                              |\n");
             printf("|            Digite o codigo unico no campo abaixo             |\n");
             printf("|______________________________________________________________|\n");   
-            printf(" Codigo unico: ");   
+            printf(" Codigo unico: ");
+            fflush(stdin);   
             scanf(" %i",&uuid);
 
             //procura os contatos que combine com a busca e indica se um ou mais contatos foram encontrados
@@ -290,7 +297,8 @@ void busca(Pessoa _pessoa[]){
             printf("|                                                              |\n");
             printf("|                Digite o nome no campo abaixo                 |\n");
             printf("|______________________________________________________________|\n");   
-            printf(" Nome: ");   
+            printf(" Nome: ");
+            fflush(stdin);   
             scanf("%s",nome);
             
             //procura os contatos que combine com a busca e indica se um ou mais contatos foram encontrados
@@ -333,4 +341,43 @@ void busca(Pessoa _pessoa[]){
         system("pause");
     }
 
+}
+
+void alterar(Pessoa _pessoa[]){
+    int uuid;
+    bool pessoaEncontrada = false;
+
+    system("cls");
+    printf(" ______________________________________________________________\n");
+    printf("|_________________________ ALTERAR ____________________________|\n");
+    printf("|                                                              |\n");
+    printf("|            Digite o codigo unico no campo abaixo             |\n");
+    printf("|______________________________________________________________|\n");   
+    printf(" Codigo unico: ");   
+    fflush(stdin);
+    scanf("%i",&uuid);
+
+    //procura os contatos que combine com a busca e indica se um ou mais contatos foram encontrados
+    system("cls");
+    for(int i=0; i<maximoDePessoas; i++){
+        
+        if(uuid == _pessoa[i].uuid){
+          
+            //readiciona o contato (reescrevendo o conteudo)
+            _pessoa[i] = adiciona(_pessoa[i].uuid);
+        
+            pessoaEncontrada = true;
+        }
+    }
+    
+    //Se não encontrar ninguem na agenda
+    if(pessoaEncontrada == false){
+        system("cls");
+        printf(" ______________________________________________________________\n");
+        printf("|_________________________ ALTERAR ____________________________|\n");
+        printf("|                                                              |\n");
+        printf("|                    Contato nao encontrado                    |\n");
+        printf("|______________________________________________________________|\n");   
+        system("pause");
+    }
 }
