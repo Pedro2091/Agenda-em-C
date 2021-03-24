@@ -36,14 +36,22 @@ através de seu código. Caso o código não seja encontrado, será exibida a me
 DETALHES DA IMPLEMENTAÇÃO:
   Para a implementação do projeto, deve-se atentar aos seguintes requisitos:
   > Utilizar funções.
+  
   > Manter o código organizado e comentado.
+  
   > Verificar o funcionamento correto de cada parte do programa.
+  
   > Respeitar o prazo e escopo de cada entrega.
+  
   > Manter a organização no versionamento do projeto.
 
 PRAZO PARA ENTREGA DE CADA PARTE:
   > Cadastrar: 11/03/21
+  
   > Listar: 18/03/21
+  
   > Buscar: 25/03/21
+  
   > Alterar: 01/04/21
+  
   > Excluir: 08/04/21
