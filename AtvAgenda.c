@@ -150,7 +150,9 @@ main(){
                 alterar(pessoa);
             break;
             
+            //EXCLUIR
             case '5':
+                excluir(pessoa);
             break;
             
             default:
@@ -169,6 +171,25 @@ main(){
     }
 
 }
+
+//UTIL
+
+//mostra um contato especifico  
+void mostra(Pessoa _pessoa){
+    
+    printf(" ______________________________________________________________\n");
+    printf("\n");
+    printf("         Codigo Unico: %i\n",_pessoa.uuid);            
+    printf("\n");
+    printf("         Nome: %s\n", _pessoa.nome);            
+    printf("         Telefone: %s\n", _pessoa.telefone);            
+    printf("         Email: %s\n", _pessoa.email);            
+    printf("         Data de Nascimento: %s\n", _pessoa.dataDeNascimento);            
+    printf("         Observacoes: %s\n", _pessoa.observ);            
+    printf(" ______________________________________________________________\n");
+}
+
+//FUNÇÕES DA AGENDA
 
 //abre a tela de leitura das informacoes e retorna uma Struct Pessoa para o Array de pessoas  
 Pessoa adiciona(int _uuid){
@@ -222,21 +243,6 @@ Pessoa adiciona(int _uuid){
     scanf("%s",temp.observ);
 
     return temp;
-}
-
-//mostra um contato especifico  
-void mostra(Pessoa _pessoa){
-    
-    printf(" ______________________________________________________________\n");
-    printf("\n");
-    printf("         Codigo Unico: %i\n",_pessoa.uuid);            
-    printf("\n");
-    printf("         Nome: %s\n", _pessoa.nome);            
-    printf("         Telefone: %s\n", _pessoa.telefone);            
-    printf("         Email: %s\n", _pessoa.email);            
-    printf("         Data de Nascimento: %s\n", _pessoa.dataDeNascimento);            
-    printf("         Observacoes: %s\n", _pessoa.observ);            
-    printf(" ______________________________________________________________\n");
 }
 
 //busca contatos
@@ -343,6 +349,7 @@ void busca(Pessoa _pessoa[]){
 
 }
 
+//altera contatos
 void alterar(Pessoa _pessoa[]){
     int uuid;
     bool pessoaEncontrada = false;
@@ -375,6 +382,75 @@ void alterar(Pessoa _pessoa[]){
         system("cls");
         printf(" ______________________________________________________________\n");
         printf("|_________________________ ALTERAR ____________________________|\n");
+        printf("|                                                              |\n");
+        printf("|                    Contato nao encontrado                    |\n");
+        printf("|______________________________________________________________|\n");   
+        system("pause");
+    }
+}
+
+//exclui contatos
+void excluir(Pessoa _pessoa[]){
+    int uuid;
+    char op;
+    bool pessoaEncontrada = false;
+
+    system("cls");
+    printf(" ______________________________________________________________\n");
+    printf("|_________________________ EXCLUIR ____________________________|\n");
+    printf("|                                                              |\n");
+    printf("|            Digite o codigo unico no campo abaixo             |\n");
+    printf("|______________________________________________________________|\n");   
+    printf(" Codigo unico: ");   
+    fflush(stdin);
+    scanf("%i",&uuid);
+
+    //procura os contatos que combine com a busca e indica se um ou mais contatos foram encontrados
+    system("cls");
+    for(int i=0; i<maximoDePessoas; i++){
+        
+        if(uuid == _pessoa[i].uuid){
+            
+            system("cls");
+            printf(" ______________________________________________________________\n");
+            printf("|_________________________ EXCLUIR ____________________________|\n");
+            printf("|                                                              |\n");
+            printf("|  Voce esta prestes a exluir este contato, tem certeza disso? |\n");
+            printf("|                                                              |\n");   
+            
+            mostra(_pessoa[i]);
+            
+            //confirmação de escolha
+            printf("Confirme sua escolha (S/N): ");   
+            fflush(stdin);
+            scanf("%c", &op);
+                
+            if(op=='s' || op=='S'){
+                //exclui o contato (reescrevendo TODO o conteudo pra NULL/0)
+                memset(&_pessoa[i], NULL, sizeof(Pessoa));
+                
+                pessoaEncontrada = true;
+
+                system("cls");
+                printf(" ______________________________________________________________\n");
+                printf("|_________________________ EXCLUIR ____________________________|\n");
+                printf("|                                                              |\n");
+                printf("|                      Usuario excluido                        |\n");
+                printf("|______________________________________________________________|\n");   
+                system("pause");
+            
+            }else{
+                pessoaEncontrada = true;
+                break;
+            }
+        }
+    }
+    
+    //Se não encontrar ninguem na agenda
+    if(pessoaEncontrada == false){
+        system("cls");
+        printf(" ______________________________________________________________\n");
+        printf("|_________________________ EXCLUIR ____________________________|\n");
         printf("|                                                              |\n");
         printf("|                    Contato nao encontrado                    |\n");
         printf("|______________________________________________________________|\n");   
