@@ -15,11 +15,14 @@ typedef struct Pessoa{
 //declaração de constantes e funcoes
 const int maximoDePessoas = 10;
 const int maximoDeUUID = 500;
-Pessoa adiciona(int _uuid);
-void mostra(Pessoa _pessoa);
-void busca (Pessoa _pessoa[]);
 
-///////////////////////////////////////eu poderia mesclar os for 33/39
+void mostra(Pessoa _pessoa);
+Pessoa leia(int _uuid);
+void listar(Pessoa _pessoa[], int pessoasNaAgenda);
+void busca(Pessoa _pessoa[]);
+void alterar(Pessoa _pessoa[]);
+void excluir(Pessoa _pessoa[]);
+
 
 main(){
     //agenda / espaços para pessoas
@@ -33,13 +36,13 @@ main(){
     //percorre a agenda, limpa todo o lixo das variáveis e zera todos os códigos (UUDIs) dentro do struct
     for(int i=0; i<maximoDePessoas; i++){
         //memset define um valor para uma variavel para os primeiros caracteres definidos
-        memset(&pessoa[i], NULL, sizeof(Pessoa));
+        memset(&pessoa[i], NULL, sizeof(Pessoa));  
     }
+    
     //zera o array que registra os ids gerados
     for(int i=0; i<maximoDeUUID; i++){
         idGerados[i] = 0;
     }
-
 
     //MENU
     while(op != '0'){
@@ -62,11 +65,12 @@ main(){
 
         switch(op){   
             case '0':
-            system("cls");
+                system("cls");
             break;
 
             //CADASTRAR
             case '1':
+
                 //Se a agenda estiver lotada
                 if(pessoasNaAgenda >= maximoDePessoas){
                     system("cls");
@@ -80,10 +84,10 @@ main(){
 
                 //percorre espaços da agenda
                 for(int i=0; i<maximoDePessoas; i++){
-                             
+                                
                     //se tem espaço na agenda
                     if(pessoa[i].uuid == 0){
-                        
+
                         //gera o código unico (UUID) comparando o novo código com os já usados antes  
                         pessoa[i].uuid = 1;
 
@@ -92,8 +96,8 @@ main(){
                             while(pessoa[i].uuid == idGerados[j]){            
                                 pessoa[i].uuid++;
                             }
-
                         }
+                        
                         //salva o uuid na lista de uuid ja usados
                         for(int j=0; j<maximoDeUUID; j++){
                             if(idGerados[j] == 0){
@@ -102,7 +106,7 @@ main(){
                             }
                         }
 
-                        pessoa[i] = adiciona(pessoa[i].uuid);
+                        pessoa[i] = leia(pessoa[i].uuid);
                         
                         pessoasNaAgenda++;
 
@@ -113,31 +117,7 @@ main(){
             
             //LISTAR
             case '2':
-                system("cls");
-                
-                //se não existe pessoas na agenda
-                if(pessoasNaAgenda == 0){
-                    system("cls");
-                    printf(" ______________________________________________________________\n");
-                    printf("|___________________________ AGENDA ___________________________|\n");
-                    printf("|                                                              |\n");
-                    printf("|                         Agenda Vazia                         |\n");
-                    printf("|______________________________________________________________|\n"); 
-                    system("pause");        
-                }else{
-                
-                    //exibe a lista
-                    printf(" ______________________________________________________________\n");
-                    printf("|_____________________ TODOS OS CONTATOS ______________________|\n");
-                    for(int i=0; i<maximoDePessoas; i++){
-                        
-                        //exibe apenas os contatos não nulos
-                        if(pessoa[i].uuid != 0){    
-                            mostra(pessoa[i]);
-                        }
-                    }
-                    system("pause");
-                }
+                listar(pessoa,pessoasNaAgenda);
             break;
             
             //BUSCAR
@@ -156,9 +136,7 @@ main(){
             break;
             
             default:
-                //system("cls");
-
-                printf("%c",op);
+                system("cls");
 
                 printf(" ______________________________________________________________\n");
                 printf("|___________________________ AGENDA ___________________________|\n");
@@ -171,6 +149,7 @@ main(){
     }
 
 }
+//--------------------------------------------- FUNÇÕES ----------------------------------------------
 
 //UTIL
 
@@ -189,10 +168,8 @@ void mostra(Pessoa _pessoa){
     printf(" ______________________________________________________________\n");
 }
 
-//FUNÇÕES DA AGENDA
-
 //abre a tela de leitura das informacoes e retorna uma Struct Pessoa para o Array de pessoas  
-Pessoa adiciona(int _uuid){
+Pessoa leia(int _uuid){
     Pessoa temp;
 
     temp.uuid = _uuid;
@@ -243,6 +220,38 @@ Pessoa adiciona(int _uuid){
     scanf("%s",temp.observ);
 
     return temp;
+}
+
+
+//FUNÇÕES DA AGENDA
+
+//lista contatos
+void listar(Pessoa _pessoa[], int pessoasNaAgenda){
+    
+    system("cls");
+    //se não existe pessoas na agenda
+    if(pessoasNaAgenda == 0){
+        system("cls");
+        printf(" ______________________________________________________________\n");
+        printf("|___________________________ AGENDA ___________________________|\n");
+        printf("|                                                              |\n");
+        printf("|                         Agenda Vazia                         |\n");
+        printf("|______________________________________________________________|\n"); 
+        system("pause");        
+    }else{
+
+        //exibe a lista
+        printf(" ______________________________________________________________\n");
+        printf("|_____________________ TODOS OS CONTATOS ______________________|\n");
+        for(int i=0; i<maximoDePessoas; i++){
+            
+            //exibe apenas os contatos não nulos
+            if(_pessoa[i].uuid != 0){    
+                mostra(_pessoa[i]);
+            }
+        }
+        system("pause");
+    }
 }
 
 //busca contatos
@@ -371,7 +380,7 @@ void alterar(Pessoa _pessoa[]){
         if(uuid == _pessoa[i].uuid){
           
             //readiciona o contato (reescrevendo o conteudo)
-            _pessoa[i] = adiciona(_pessoa[i].uuid);
+            _pessoa[i] = leia(_pessoa[i].uuid);
         
             pessoaEncontrada = true;
         }
