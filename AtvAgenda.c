@@ -181,7 +181,8 @@ Pessoa leia(int _uuid){
     printf("|                Digite o nome no campo abaixo                 |\n");
     printf("|______________________________________________________________|\n");   
     printf(" Nome: ");    
-    scanf("%s",temp.nome);
+    fflush(stdin);
+    fgets(temp.nome, sizeof temp.nome, stdin);
 
     system("cls");
     printf(" ______________________________________________________________\n");
@@ -190,7 +191,8 @@ Pessoa leia(int _uuid){
     printf("|              Digite o telefone no campo abaixo               |\n");
     printf("|______________________________________________________________|\n");   
     printf(" Telefone: ");    
-    scanf("%s",temp.telefone);
+    fflush(stdin);
+    fgets(temp.telefone, sizeof temp.telefone, stdin);
 
     system("cls");
     printf(" ______________________________________________________________\n");
@@ -199,7 +201,8 @@ Pessoa leia(int _uuid){
     printf("|                Digite a email no campo abaixo                |\n");
     printf("|______________________________________________________________|\n");   
     printf(" Email: ");    
-    scanf("%s",temp.email);
+    fflush(stdin);
+    fgets(temp.email, sizeof temp.email, stdin);
 
     system("cls");
     printf(" ______________________________________________________________\n");
@@ -208,7 +211,8 @@ Pessoa leia(int _uuid){
     printf("|          Digite a data de nascimento no campo abaixo         |\n");
     printf("|______________________________________________________________|\n");   
     printf(" Data: ");    
-    scanf("%s",temp.dataDeNascimento);
+    fflush(stdin);
+    fgets(temp.dataDeNascimento, sizeof temp.dataDeNascimento, stdin);
 
     system("cls");
     printf(" ______________________________________________________________\n");
@@ -217,8 +221,9 @@ Pessoa leia(int _uuid){
     printf("|           Digite alguma observacao no campo abaixo           |\n");
     printf("|______________________________________________________________|\n");   
     printf(" Observacao: ");    
-    scanf("%s",temp.observ);
-
+    fflush(stdin);
+    fgets(temp.observ, sizeof temp.observ, stdin);
+     
     return temp;
 }
 
