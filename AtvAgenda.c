@@ -15,11 +15,14 @@ typedef struct Pessoa{
 //declaração de constantes e funcoes
 const int maximoDePessoas = 10;
 const int maximoDeUUID = 500;
-Pessoa adiciona(int _uuid);
-void mostra(Pessoa _pessoa);
-void busca (Pessoa _pessoa[]);
 
-///////////////////////////////////////eu poderia mesclar os for 33/39
+void mostra(Pessoa _pessoa);
+Pessoa leia(int _uuid);
+void listar(Pessoa _pessoa[], int pessoasNaAgenda);
+void busca(Pessoa _pessoa[]);
+void alterar(Pessoa _pessoa[]);
+void excluir(Pessoa _pessoa[]);
+
 
 main(){
     //agenda / espaços para pessoas
@@ -33,13 +36,13 @@ main(){
     //percorre a agenda, limpa todo o lixo das variáveis e zera todos os códigos (UUDIs) dentro do struct
     for(int i=0; i<maximoDePessoas; i++){
         //memset define um valor para uma variavel para os primeiros caracteres definidos
-        memset(&pessoa[i], NULL, sizeof(Pessoa));
+        memset(&pessoa[i], NULL, sizeof(Pessoa));  
     }
+    
     //zera o array que registra os ids gerados
     for(int i=0; i<maximoDeUUID; i++){
         idGerados[i] = 0;
     }
-
 
     //MENU
     while(op != '0'){
@@ -62,11 +65,12 @@ main(){
 
         switch(op){   
             case '0':
-            system("cls");
+                system("cls");
             break;
 
             //CADASTRAR
             case '1':
+
                 //Se a agenda estiver lotada
                 if(pessoasNaAgenda >= maximoDePessoas){
                     system("cls");
@@ -80,10 +84,10 @@ main(){
 
                 //percorre espaços da agenda
                 for(int i=0; i<maximoDePessoas; i++){
-                             
+                                
                     //se tem espaço na agenda
                     if(pessoa[i].uuid == 0){
-                        
+
                         //gera o código unico (UUID) comparando o novo código com os já usados antes  
                         pessoa[i].uuid = 1;
 
@@ -92,8 +96,8 @@ main(){
                             while(pessoa[i].uuid == idGerados[j]){            
                                 pessoa[i].uuid++;
                             }
-
                         }
+                        
                         //salva o uuid na lista de uuid ja usados
                         for(int j=0; j<maximoDeUUID; j++){
                             if(idGerados[j] == 0){
@@ -102,7 +106,7 @@ main(){
                             }
                         }
 
-                        pessoa[i] = adiciona(pessoa[i].uuid);
+                        pessoa[i] = leia(pessoa[i].uuid);
                         
                         pessoasNaAgenda++;
 
@@ -113,31 +117,7 @@ main(){
             
             //LISTAR
             case '2':
-                system("cls");
-                
-                //se não existe pessoas na agenda
-                if(pessoasNaAgenda == 0){
-                    system("cls");
-                    printf(" ______________________________________________________________\n");
-                    printf("|___________________________ AGENDA ___________________________|\n");
-                    printf("|                                                              |\n");
-                    printf("|                         Agenda Vazia                         |\n");
-                    printf("|______________________________________________________________|\n"); 
-                    system("pause");        
-                }else{
-                
-                    //exibe a lista
-                    printf(" ______________________________________________________________\n");
-                    printf("|_____________________ TODOS OS CONTATOS ______________________|\n");
-                    for(int i=0; i<maximoDePessoas; i++){
-                        
-                        //exibe apenas os contatos não nulos
-                        if(pessoa[i].uuid != 0){    
-                            mostra(pessoa[i]);
-                        }
-                    }
-                    system("pause");
-                }
+                listar(pessoa,pessoasNaAgenda);
             break;
             
             //BUSCAR
@@ -150,13 +130,13 @@ main(){
                 alterar(pessoa);
             break;
             
+            //EXCLUIR
             case '5':
+                excluir(pessoa);
             break;
             
             default:
-                //system("cls");
-
-                printf("%c",op);
+                system("cls");
 
                 printf(" ______________________________________________________________\n");
                 printf("|___________________________ AGENDA ___________________________|\n");
@@ -169,60 +149,9 @@ main(){
     }
 
 }
+//--------------------------------------------- FUNÇÕES ----------------------------------------------
 
-//abre a tela de leitura das informacoes e retorna uma Struct Pessoa para o Array de pessoas  
-Pessoa adiciona(int _uuid){
-    Pessoa temp;
-
-    temp.uuid = _uuid;
-
-    system("cls");
-    printf(" ______________________________________________________________\n");
-    printf("|_________________________ ADICIONAR __________________________|\n");
-    printf("|                                                              |\n");
-    printf("|                Digite o nome no campo abaixo                 |\n");
-    printf("|______________________________________________________________|\n");   
-    printf(" Nome: ");    
-    scanf("%s",temp.nome);
-
-    system("cls");
-    printf(" ______________________________________________________________\n");
-    printf("|_________________________ ADICIONAR __________________________|\n");
-    printf("|                                                              |\n");
-    printf("|              Digite o telefone no campo abaixo               |\n");
-    printf("|______________________________________________________________|\n");   
-    printf(" Telefone: ");    
-    scanf("%s",temp.telefone);
-
-    system("cls");
-    printf(" ______________________________________________________________\n");
-    printf("|_________________________ ADICIONAR __________________________|\n");
-    printf("|                                                              |\n");
-    printf("|                Digite a email no campo abaixo                |\n");
-    printf("|______________________________________________________________|\n");   
-    printf(" Email: ");    
-    scanf("%s",temp.email);
-
-    system("cls");
-    printf(" ______________________________________________________________\n");
-    printf("|_________________________ ADICIONAR __________________________|\n");
-    printf("|                                                              |\n");
-    printf("|          Digite a data de nascimento no campo abaixo         |\n");
-    printf("|______________________________________________________________|\n");   
-    printf(" Data: ");    
-    scanf("%s",temp.dataDeNascimento);
-
-    system("cls");
-    printf(" ______________________________________________________________\n");
-    printf("|_________________________ ADICIONAR __________________________|\n");
-    printf("|                                                              |\n");
-    printf("|           Digite alguma observacao no campo abaixo           |\n");
-    printf("|______________________________________________________________|\n");   
-    printf(" Observacao: ");    
-    scanf("%s",temp.observ);
-
-    return temp;
-}
+//UTIL
 
 //mostra um contato especifico  
 void mostra(Pessoa _pessoa){
@@ -237,6 +166,97 @@ void mostra(Pessoa _pessoa){
     printf("         Data de Nascimento: %s\n", _pessoa.dataDeNascimento);            
     printf("         Observacoes: %s\n", _pessoa.observ);            
     printf(" ______________________________________________________________\n");
+}
+
+//abre a tela de leitura das informacoes e retorna uma Struct Pessoa para o Array de pessoas  
+Pessoa leia(int _uuid){
+    Pessoa temp;
+
+    temp.uuid = _uuid;
+
+    system("cls");
+    printf(" ______________________________________________________________\n");
+    printf("|_________________________ ADICIONAR __________________________|\n");
+    printf("|                                                              |\n");
+    printf("|                Digite o nome no campo abaixo                 |\n");
+    printf("|______________________________________________________________|\n");   
+    printf(" Nome: ");    
+    fflush(stdin);
+    fgets(temp.nome, sizeof temp.nome, stdin);
+
+    system("cls");
+    printf(" ______________________________________________________________\n");
+    printf("|_________________________ ADICIONAR __________________________|\n");
+    printf("|                                                              |\n");
+    printf("|              Digite o telefone no campo abaixo               |\n");
+    printf("|______________________________________________________________|\n");   
+    printf(" Telefone: ");    
+    fflush(stdin);
+    fgets(temp.telefone, sizeof temp.telefone, stdin);
+
+    system("cls");
+    printf(" ______________________________________________________________\n");
+    printf("|_________________________ ADICIONAR __________________________|\n");
+    printf("|                                                              |\n");
+    printf("|                Digite a email no campo abaixo                |\n");
+    printf("|______________________________________________________________|\n");   
+    printf(" Email: ");    
+    fflush(stdin);
+    fgets(temp.email, sizeof temp.email, stdin);
+
+    system("cls");
+    printf(" ______________________________________________________________\n");
+    printf("|_________________________ ADICIONAR __________________________|\n");
+    printf("|                                                              |\n");
+    printf("|          Digite a data de nascimento no campo abaixo         |\n");
+    printf("|______________________________________________________________|\n");   
+    printf(" Data: ");    
+    fflush(stdin);
+    fgets(temp.dataDeNascimento, sizeof temp.dataDeNascimento, stdin);
+
+    system("cls");
+    printf(" ______________________________________________________________\n");
+    printf("|_________________________ ADICIONAR __________________________|\n");
+    printf("|                                                              |\n");
+    printf("|           Digite alguma observacao no campo abaixo           |\n");
+    printf("|______________________________________________________________|\n");   
+    printf(" Observacao: ");    
+    fflush(stdin);
+    fgets(temp.observ, sizeof temp.observ, stdin);
+     
+    return temp;
+}
+
+
+//FUNÇÕES DA AGENDA
+
+//lista contatos
+void listar(Pessoa _pessoa[], int pessoasNaAgenda){
+    
+    system("cls");
+    //se não existe pessoas na agenda
+    if(pessoasNaAgenda == 0){
+        system("cls");
+        printf(" ______________________________________________________________\n");
+        printf("|___________________________ AGENDA ___________________________|\n");
+        printf("|                                                              |\n");
+        printf("|                         Agenda Vazia                         |\n");
+        printf("|______________________________________________________________|\n"); 
+        system("pause");        
+    }else{
+
+        //exibe a lista
+        printf(" ______________________________________________________________\n");
+        printf("|_____________________ TODOS OS CONTATOS ______________________|\n");
+        for(int i=0; i<maximoDePessoas; i++){
+            
+            //exibe apenas os contatos não nulos
+            if(_pessoa[i].uuid != 0){    
+                mostra(_pessoa[i]);
+            }
+        }
+        system("pause");
+    }
 }
 
 //busca contatos
@@ -343,6 +363,7 @@ void busca(Pessoa _pessoa[]){
 
 }
 
+//altera contatos
 void alterar(Pessoa _pessoa[]){
     int uuid;
     bool pessoaEncontrada = false;
@@ -364,7 +385,7 @@ void alterar(Pessoa _pessoa[]){
         if(uuid == _pessoa[i].uuid){
           
             //readiciona o contato (reescrevendo o conteudo)
-            _pessoa[i] = adiciona(_pessoa[i].uuid);
+            _pessoa[i] = leia(_pessoa[i].uuid);
         
             pessoaEncontrada = true;
         }
@@ -375,6 +396,75 @@ void alterar(Pessoa _pessoa[]){
         system("cls");
         printf(" ______________________________________________________________\n");
         printf("|_________________________ ALTERAR ____________________________|\n");
+        printf("|                                                              |\n");
+        printf("|                    Contato nao encontrado                    |\n");
+        printf("|______________________________________________________________|\n");   
+        system("pause");
+    }
+}
+
+//exclui contatos
+void excluir(Pessoa _pessoa[]){
+    int uuid;
+    char op;
+    bool pessoaEncontrada = false;
+
+    system("cls");
+    printf(" ______________________________________________________________\n");
+    printf("|_________________________ EXCLUIR ____________________________|\n");
+    printf("|                                                              |\n");
+    printf("|            Digite o codigo unico no campo abaixo             |\n");
+    printf("|______________________________________________________________|\n");   
+    printf(" Codigo unico: ");   
+    fflush(stdin);
+    scanf("%i",&uuid);
+
+    //procura os contatos que combine com a busca e indica se um ou mais contatos foram encontrados
+    system("cls");
+    for(int i=0; i<maximoDePessoas; i++){
+        
+        if(uuid == _pessoa[i].uuid){
+            
+            system("cls");
+            printf(" ______________________________________________________________\n");
+            printf("|_________________________ EXCLUIR ____________________________|\n");
+            printf("|                                                              |\n");
+            printf("|  Voce esta prestes a exluir este contato, tem certeza disso? |\n");
+            printf("|                                                              |\n");   
+            
+            mostra(_pessoa[i]);
+            
+            //confirmação de escolha
+            printf("Confirme sua escolha (S/N): ");   
+            fflush(stdin);
+            scanf("%c", &op);
+                
+            if(op=='s' || op=='S'){
+                //exclui o contato (reescrevendo TODO o conteudo pra NULL/0)
+                memset(&_pessoa[i], NULL, sizeof(Pessoa));
+                
+                pessoaEncontrada = true;
+
+                system("cls");
+                printf(" ______________________________________________________________\n");
+                printf("|_________________________ EXCLUIR ____________________________|\n");
+                printf("|                                                              |\n");
+                printf("|                      Usuario excluido                        |\n");
+                printf("|______________________________________________________________|\n");   
+                system("pause");
+            
+            }else{
+                pessoaEncontrada = true;
+                break;
+            }
+        }
+    }
+    
+    //Se não encontrar ninguem na agenda
+    if(pessoaEncontrada == false){
+        system("cls");
+        printf(" ______________________________________________________________\n");
+        printf("|_________________________ EXCLUIR ____________________________|\n");
         printf("|                                                              |\n");
         printf("|                    Contato nao encontrado                    |\n");
         printf("|______________________________________________________________|\n");   
